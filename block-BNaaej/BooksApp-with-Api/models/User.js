@@ -7,7 +7,7 @@ var userSchema = new Schema(
     name: { type: String },
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
-    books: { type: mongoose.Types.ObjectId, ref: "User" },
+    books: { type: mongoose.Types.ObjectId, ref: "Book" },
     comments: { type: mongoose.Types.ObjectId, ref: "Comment" },
   },
   { timestamps: true }

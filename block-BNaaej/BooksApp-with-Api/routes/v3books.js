@@ -130,15 +130,55 @@ router.get("list/by/:category", function (res, res, next) {
 
 //count books for each category
 
-router.get("/count/by/:category", (req, res, next) => {
+// router.get("/count/by/:category", (req, res, next) => {
+//   Book.find({}, (err, books) => {
+//     if (err) return next(err);
+
+//     var count = books.reduce((acc, cv) => {
+//       acc.push(cv.category);
+//       return acc;
+//     }, []);
+//   });
+// });
+
+//list of books by auther
+
+router.get("/list/by/:author", (req, res, next) => {
+  var authorId = req.params.id;
+
+  Book.findById(authorId)
+    .populate("books")
+    .exec((err, user) => {
+      if (err) return next(err);
+      res.json({ books: user.books });
+    });
+});
+
+////list of all tags
+
+router.get("/list/tags", (req, res, next) => {
   Book.find({}, (err, books) => {
     if (err) return next(err);
 
-    var count = books.reduce((acc, cv) => {
-      acc.push(cv.category);
+    var tags = books.reduce((acc, cv) => {
+      acc.push(cv.tags);
       return acc;
     }, []);
+
+    res.json({ tags });
   });
 });
+
+//filter books by tags
+
+router.get("/list/tags/:name", (req, res, next) => {
+  var name = req.params.name;
+
+  Books.find({ tags: name }, (err, book) => {
+    if (err) return next(err);
+    res.json({ book });
+  });
+});
+
 
 module.exports = router;
